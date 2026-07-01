@@ -1,13 +1,13 @@
-const express = require("express");
+require("dotenv").config();
 
-const app = express();
+console.log("✅ server.js started");
 
-const PORT = 5000;
+const app = require("./src/app");
 
-app.get("/", (req, res) => {
-  res.send("AI Doctor Appointment & Health Summary Backend is Running ");
-});
+console.log("✅ app imported");
+
+const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+  console.log(`🚀 Server running on http://localhost:${PORT}`);
 });
