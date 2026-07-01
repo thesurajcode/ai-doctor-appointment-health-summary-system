@@ -13,6 +13,12 @@ app.get("/", (req, res) => {
   res.send("AI Doctor Appointment & Health Summary Backend is Running");
 });
 
+const errorHandler = require("./middleware/error.middleware");
+//All Routes
+
 app.use("/api/v1/auth", authRoutes);
+
+// Error Middleware
+app.use(errorHandler);
 
 module.exports = app;

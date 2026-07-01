@@ -1,5 +1,6 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const ApiError = require("../errors/ApiError");
 
 const {
   findUserByEmail,
@@ -12,7 +13,7 @@ const registerUser = async (userData) => {
   const existingUser = await findUserByEmail(email);
 
   if (existingUser) {
-    throw new Error("Email already exists");
+    throw new ApiError(409, "Email already exists");
   }
 
   const hashedPassword = await bcrypt.hash(password, 10);
@@ -33,13 +34,13 @@ const loginUser = async (email, password) => {
   const user = await findUserByEmail(email);
 
   if (!user) {
-    throw new Error("Invalid email or password");
-  }
+    throw new ApiError(409, "Email already exists");
+  } 
 
   const isMatch = await bcrypt.compare(password, user.password);
 
   if (!isMatch) {
-    throw new Error("Invalid email or password");
+    throw new ApiError(401, "Invalid email or password");
   }
 
   const token = jwt.sign(

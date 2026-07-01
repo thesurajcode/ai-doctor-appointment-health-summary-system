@@ -3,42 +3,37 @@ const {
   loginUser,
 } = require("../services/auth.service");
 
-const register = async (req, res) => {
-  try {
-    const user = await registerUser(req.body);
+const asyncHandler = require("../utils/asyncHandler");
+const ApiResponse = require("../utils/ApiResponse");
 
-    res.status(201).json({
-      success: true,
-      message: "User registered successfully",
-      data: user,
-    });
-  } catch (error) {
-    res.status(400).json({
-      success: false,
-      message: error.message,
-    });
-  }
-};
+const register = asyncHandler(async (req, res) => {
+  const user = await registerUser(req.body);
 
-const login = async (req, res) => {
-  try {
-    const { email, password } = req.body;
+  return res.status(201).json(
+    new ApiResponse(
+      201,
+      user,
+      "User registered successfully"
+    )
+  );
+});
 
-    const result = await loginUser(email, password);
+const login = asyncHandler(async (req, res) => {
+  const { email, password } = req.body;
 
-    res.status(200).json({
-      success: true,
-      message: "Login successful",
-      token: result.token,
-      user: result.user,
-    });
-  } catch (error) {
-    res.status(401).json({
-      success: false,
-      message: error.message,
-    });
-  }
-};
+  const result = await loginUser(email, password);
+
+  return res.status(200).json(
+    new ApiResponse(
+      200,
+      {
+        token: result.token,
+        user: result.user,
+      },
+      "Login successful"
+    )
+  );
+});
 
 module.exports = {
   register,
