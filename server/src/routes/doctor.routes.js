@@ -12,6 +12,7 @@ const {
   createDoctorProfile,
   getDoctorProfile,
   updateDoctor,
+  deleteDoctor,
 } = require("../controllers/doctor.controller");
 
 const router = express.Router();
@@ -37,6 +38,13 @@ router.put(
   roleMiddleware("DOCTOR"),
   validate(doctorProfileSchema),
   updateDoctor
+);
+
+router.delete(
+  "/profile",
+  authMiddleware,
+  roleMiddleware("DOCTOR"),
+  deleteDoctor
 );
 
 module.exports = router;

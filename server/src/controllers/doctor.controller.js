@@ -5,6 +5,8 @@ const {
   createProfile,
   getMyProfile,
   updateMyProfile,
+  deleteMyProfile,
+  
 } = require("../services/doctor.service");
 
 const createDoctorProfile = asyncHandler(async (req, res) => {
@@ -50,8 +52,21 @@ const updateDoctor = asyncHandler(async (req, res) => {
   );
 });
 
+const deleteDoctor = asyncHandler(async (req, res) => {
+  await deleteMyProfile(req.user.id);
+
+  return res.status(200).json(
+    new ApiResponse(
+      200,
+      null,
+      "Doctor profile deleted successfully"
+    )
+  );
+});
+
 module.exports = {
   createDoctorProfile,
   getDoctorProfile,
   updateDoctor,
+  deleteDoctor,
 };

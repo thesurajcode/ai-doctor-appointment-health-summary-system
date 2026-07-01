@@ -81,9 +81,19 @@ const updateDoctorProfile = async (userId, doctorData) => {
     },
   });
 };
+
+const deleteDoctorProfile = async (userId) => {
+  return prisma.doctor.delete({
+    where: {
+      userId,
+    },
+  });
+};
+
 module.exports = {
   createDoctorProfile,
   getDoctorByUserId,
   getDoctorProfile,
   updateDoctorProfile,
+  deleteDoctorProfile,
 };

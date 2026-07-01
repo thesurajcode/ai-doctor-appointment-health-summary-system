@@ -5,6 +5,7 @@ const {
   getDoctorByUserId,
   getDoctorProfile,
   updateDoctorProfile,
+  deleteDoctorProfile,
 } = require("../repositories/doctor.repository");
 
 
@@ -47,9 +48,22 @@ const updateMyProfile = async (userId, data) => {
   return updateDoctorProfile(userId, data);
 };
 
+const deleteMyProfile = async (userId) => {
+  const doctor = await getDoctorByUserId(userId);
+
+  if (!doctor) {
+    throw new ApiError(404, "Doctor profile not found");
+  }
+
+  await deleteDoctorProfile(userId);
+
+  return;
+};
+
 
 module.exports = {
   createProfile,
   getMyProfile,
   updateMyProfile,
+  deleteMyProfile,
 };
