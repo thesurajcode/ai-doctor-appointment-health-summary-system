@@ -90,10 +90,54 @@ const deleteDoctorProfile = async (userId) => {
   });
 };
 
+const getAllDoctors = async () => {
+  return prisma.doctor.findMany({
+    where: {
+      available: true,
+    },
+    include: {
+      user: {
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          phone: true,
+          profileImage: true,
+        },
+      },
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+};
+
+const getDoctorById = async (doctorId) => {
+  return prisma.doctor.findUnique({
+    where: {
+      id: doctorId,
+    },
+    include: {
+      user: {
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          phone: true,
+          profileImage: true,
+          role: true,
+        },
+      },
+    },
+  });
+};
+
 module.exports = {
   createDoctorProfile,
   getDoctorByUserId,
   getDoctorProfile,
   updateDoctorProfile,
   deleteDoctorProfile,
+  getAllDoctors,
+  getDoctorById,
 };
