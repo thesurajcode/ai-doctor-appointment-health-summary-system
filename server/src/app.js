@@ -1,22 +1,18 @@
 const express = require("express");
 const cors = require("cors");
 
-console.log("✅ app.js loaded");
+const authRoutes = require("./routes/auth.routes");
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 app.get("/", (req, res) => {
-  res.send("Root Route Working");
+  res.send("AI Doctor Appointment & Health Summary Backend is Running");
 });
 
-app.get("/api/v1/health", (req, res) => {
-  res.json({
-    success: true,
-    message: "Health Route Working"
-  });
-});
+app.use("/api/v1/auth", authRoutes);
 
 module.exports = app;
