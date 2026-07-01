@@ -4,6 +4,7 @@ const ApiResponse = require("../utils/ApiResponse");
 const {
   createProfile,
   getMyProfile,
+  updateMyProfile,
 } = require("../services/doctor.service");
 
 const createDoctorProfile = asyncHandler(async (req, res) => {
@@ -30,7 +31,27 @@ const getDoctorProfile = asyncHandler(async (req, res) => {
   );
 });
 
+const updateDoctor = asyncHandler(async (req, res) => {
+  console.log("========== CONTROLLER ==========");
+  console.log(req.body);
+  console.log(req.validatedData);
+
+  const doctor = await updateMyProfile(
+    req.user.id,
+    req.body
+  );
+
+  return res.status(200).json(
+    new ApiResponse(
+      200,
+      doctor,
+      "Doctor profile updated successfully"
+    )
+  );
+});
+
 module.exports = {
   createDoctorProfile,
   getDoctorProfile,
+  updateDoctor,
 };

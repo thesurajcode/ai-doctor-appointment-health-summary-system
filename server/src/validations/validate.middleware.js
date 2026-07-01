@@ -17,3 +17,5 @@ const validate = (schema) => {
     next();
   };
 };
+
+module.exports = validate;

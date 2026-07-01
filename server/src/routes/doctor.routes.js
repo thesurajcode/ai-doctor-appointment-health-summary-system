@@ -11,6 +11,7 @@ const {
 const {
   createDoctorProfile,
   getDoctorProfile,
+  updateDoctor,
 } = require("../controllers/doctor.controller");
 
 const router = express.Router();
@@ -28,6 +29,14 @@ router.post(
   roleMiddleware("DOCTOR"),
   validate(doctorProfileSchema),
   createDoctorProfile
+);
+
+router.put(
+  "/profile",
+  authMiddleware,
+  roleMiddleware("DOCTOR"),
+  validate(doctorProfileSchema),
+  updateDoctor
 );
 
 module.exports = router;

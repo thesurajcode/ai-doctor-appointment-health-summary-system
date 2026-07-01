@@ -57,8 +57,33 @@ const getDoctorProfile = async (userId) => {
 };
 
 
+const updateDoctorProfile = async (userId, doctorData) => {
+
+  console.log("========== REPOSITORY ==========");
+  console.log(doctorData);
+
+  return prisma.doctor.update({
+    where: {
+      userId,
+    },
+    data: doctorData,
+    include: {
+      user: {
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          phone: true,
+          profileImage: true,
+          role: true,
+        },
+      },
+    },
+  });
+};
 module.exports = {
   createDoctorProfile,
   getDoctorByUserId,
   getDoctorProfile,
+  updateDoctorProfile,
 };
