@@ -7,12 +7,27 @@ const {
 
 const authMiddleware = require("../middleware/auth.middleware");
 const roleMiddleware = require("../middleware/role.middleware");
+const validate = require("../middleware/validate.middleware");
+
+const {
+  registerSchema,
+  loginSchema,
+} = require("../validations/auth.validation");
 
 const router = express.Router();
 
 // Public Routes
-router.post("/register", register);
-router.post("/login", login);
+router.post(
+  "/register",
+  validate(registerSchema),
+  register
+);
+
+router.post(
+  "/login",
+  validate(loginSchema),
+  login
+);
 
 // Protected Route
 router.get("/me", authMiddleware, (req, res) => {
