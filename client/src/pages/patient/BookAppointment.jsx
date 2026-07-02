@@ -9,6 +9,8 @@ const BookAppointment = () => {
 
   const [doctors, setDoctors] = useState([]);
 
+  const [selectedDoctor, setSelectedDoctor] = useState(null);
+
   const [formData, setFormData] = useState({
     doctorId: "",
     appointmentDate: "",
@@ -31,10 +33,20 @@ const BookAppointment = () => {
   };
 
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+    const { name, value } = e.target;
+
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+
+    if (name === "doctorId") {
+      const doctor = doctors.find(
+        (doc) => doc.id === value
+      );
+
+      setSelectedDoctor(doctor);
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -56,7 +68,6 @@ const BookAppointment = () => {
     }
   };
 
-  
   return (
     <div className="max-w-2xl mx-auto bg-white shadow-lg rounded-xl p-8">
 
@@ -65,6 +76,8 @@ const BookAppointment = () => {
       </h1>
 
       <form onSubmit={handleSubmit}>
+
+        {/* Doctor Dropdown */}
 
         <select
           name="doctorId"
@@ -82,10 +95,63 @@ const BookAppointment = () => {
               key={doctor.id}
               value={doctor.id}
             >
-              Dr. {doctor.user.name} ({doctor.specialization})
+              {doctor.user.name} ({doctor.specialization})
             </option>
           ))}
         </select>
+
+        {/* Doctor Details */}
+
+        {selectedDoctor && (
+          <div className="bg-blue-50 border border-blue-200 rounded-xl p-5 mb-6">
+
+            <h2 className="text-xl font-bold mb-4">
+              Doctor Details
+            </h2>
+
+            <div className="space-y-2">
+
+              <p>
+                <strong>Name:</strong>{" "}
+                {selectedDoctor.user.name}
+              </p>
+
+              <p>
+                <strong>Specialization:</strong>{" "}
+                {selectedDoctor.specialization}
+              </p>
+
+              <p>
+                <strong>Qualification:</strong>{" "}
+                {selectedDoctor.qualification}
+              </p>
+
+              <p>
+                <strong>Experience:</strong>{" "}
+                {selectedDoctor.experience} Years
+              </p>
+
+              <p>
+                <strong>Hospital:</strong>{" "}
+                {selectedDoctor.hospital || "N/A"}
+              </p>
+
+              <p>
+                <strong>Consultation Fee:</strong> ₹
+                {selectedDoctor.consultationFee}
+              </p>
+
+              <p>
+                <strong>Bio:</strong>{" "}
+                {selectedDoctor.bio || "N/A"}
+              </p>
+
+            </div>
+
+          </div>
+        )}
+
+        {/* Date */}
 
         <input
           type="date"
@@ -96,6 +162,8 @@ const BookAppointment = () => {
           required
         />
 
+        {/* Time */}
+
         <input
           type="time"
           name="appointmentTime"
@@ -104,6 +172,8 @@ const BookAppointment = () => {
           className="w-full border rounded-lg p-3 mb-4"
           required
         />
+
+        {/* Reason */}
 
         <textarea
           name="reason"
