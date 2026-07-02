@@ -114,15 +114,23 @@ const completeMyAppointment = async (
     );
   }
 
+  let aiSummary = "AI Summary could not be generated at this time.";
+
+try {
   // Call Flask AI Service
   const aiResponse = await generateSummary(notes);
 
-  // Save AI summary
-  return await completeAppointment(
-    appointmentId,
-    notes,
-    aiResponse.summary
-  );
+  aiSummary = aiResponse.summary;
+
+} catch (error) {
+  console.error("Gemini AI Error:", error.message);
+}
+
+return await completeAppointment(
+  appointmentId,
+  notes,
+  aiSummary
+);
 };
 
 module.exports = {
