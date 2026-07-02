@@ -2,6 +2,10 @@ const ApiError = require("../errors/ApiError");
 ;
 
 const {
+  generateSummary,
+} = require("./ai.service");
+
+const {
   createAppointment,
   getDoctorById,
   getPatientByUserId,
@@ -91,6 +95,7 @@ const completeMyAppointment = async (
   appointmentId,
   notes
 ) => {
+
   const appointment = await getAppointmentById(
     appointmentId
   );
@@ -109,9 +114,14 @@ const completeMyAppointment = async (
     );
   }
 
+  // Call Flask AI Service
+  const aiResponse = await generateSummary(notes);
+
+  // Save AI summary
   return await completeAppointment(
     appointmentId,
-    notes
+    notes,
+    aiResponse.summary
   );
 };
 

@@ -174,7 +174,8 @@ const updateAppointmentStatus = async (
 
 const completeAppointment = async (
   appointmentId,
-  notes
+  notes,
+  aiSummary
 ) => {
   return prisma.appointment.update({
     where: {
@@ -183,6 +184,7 @@ const completeAppointment = async (
     data: {
       status: "COMPLETED",
       notes,
+      aiSummary,
     },
     include: {
       doctor: {

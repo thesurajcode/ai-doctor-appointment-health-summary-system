@@ -113,6 +113,7 @@ model Appointment {
   status            AppointmentStatus @default(PENDING)
 
   notes             String?
+  aiSummary         String?
 
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
