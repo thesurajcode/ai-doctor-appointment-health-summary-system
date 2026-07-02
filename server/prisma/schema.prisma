@@ -30,6 +30,13 @@ enum BloodGroup {
   O_NEGATIVE
 }
 
+enum AppointmentStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+  COMPLETED
+}
+
 model User {
   id           String   @id @default(cuid())
   name         String
@@ -50,6 +57,7 @@ model Doctor {
   id                String   @id @default(cuid())
 
   userId            String   @unique
+  
 
   specialization    String
   qualification     String
@@ -60,6 +68,7 @@ model Doctor {
   bio               String?
 
   available         Boolean @default(true)
+  appointments Appointment[]
 
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
@@ -85,6 +94,30 @@ model Patient {
 
   createdAt        DateTime    @default(now())
   updatedAt        DateTime    @updatedAt
+  appointments Appointment[]
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Appointment {
+  id                String @id @default(cuid())
+
+  doctorId          String
+  patientId         String
+
+  appointmentDate   DateTime
+  appointmentTime   String
+
+  reason            String
+
+  status            AppointmentStatus @default(PENDING)
+
+  notes             String?
+
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  doctor Doctor @relation(fields: [doctorId], references: [id], onDelete: Cascade)
+
+  patient Patient @relation(fields: [patientId], references: [id], onDelete: Cascade)
 }
