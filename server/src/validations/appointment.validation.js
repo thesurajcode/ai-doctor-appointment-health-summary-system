@@ -3,7 +3,10 @@ const { z } = require("zod");
 const appointmentSchema = z.object({
   doctorId: z.string().min(1),
 
-  appointmentDate: z.string().datetime(),
+  appointmentDate: z.string().regex(
+    /^\d{4}-\d{2}-\d{2}$/,
+    "Invalid date format. Use YYYY-MM-DD"
+  ),
 
   appointmentTime: z.string().min(1),
 

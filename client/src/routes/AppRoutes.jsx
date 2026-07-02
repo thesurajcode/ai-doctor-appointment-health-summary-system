@@ -1,11 +1,16 @@
 import { Routes, Route } from "react-router-dom";
-import ProtectedRoute from "./ProtectedRoute";
 
+import ProtectedRoute from "./ProtectedRoute";
+import PatientLayout from "../layouts/PatientLayout";
+import BookAppointment from "../pages/patient/BookAppointment";
 import Home from "../pages/shared/Home";
 import Login from "../pages/auth/Login";
 import Register from "../pages/auth/Register";
+
 import DoctorDashboard from "../pages/doctor/DoctorDashboard";
 import PatientDashboard from "../pages/patient/PatientDashboard";
+
+import DoctorLayout from "../layouts/DoctorLayout";
 
 const AppRoutes = () => {
   return (
@@ -16,22 +21,41 @@ const AppRoutes = () => {
 
       <Route path="/register" element={<Register />} />
 
-  <Route
-  path="/doctor/dashboard"
-  element={
-    <ProtectedRoute allowedRole="DOCTOR">
-      <DoctorDashboard />
-    </ProtectedRoute>
-  }
-/>
+      <Route
+        path="/doctor"
+        element={
+          <ProtectedRoute allowedRole="DOCTOR">
+            <DoctorLayout />
+          </ProtectedRoute>
+        }
+      >
+        <Route
+          path="dashboard"
+          element={<DoctorDashboard />}
+        />
+      </Route>
+
+    
+
 <Route
-  path="/patient/dashboard"
+  path="/patient"
   element={
     <ProtectedRoute allowedRole="PATIENT">
-      <PatientDashboard />
+      <PatientLayout />
     </ProtectedRoute>
   }
-/>
+>
+  <Route
+    path="dashboard"
+    element={<PatientDashboard />}
+  />
+
+  <Route
+    path="book-appointment"
+    element={<BookAppointment />}
+  />
+</Route>
+
     </Routes>
   );
 };

@@ -1,9 +1,14 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+
 import { login } from "../../services/auth.service";
+import useAuth from "../../hooks/useAuth";
 
 const Login = () => {
   const navigate = useNavigate();
+
+  // Get login function from Auth Context
+  const { login: loginUser } = useAuth();
 
   const [formData, setFormData] = useState({
     email: "",
@@ -23,14 +28,15 @@ const Login = () => {
     try {
       const response = await login(formData);
 
-      console.log(response);
+      console.log("Login Response:", response);
 
       const token = response.data.token;
       const user = response.data.user;
 
-      localStorage.setItem("token", token);
-      localStorage.setItem("user", JSON.stringify(user));
+      // Update Auth Context + Local Storage
+      loginUser(user, token);
 
+      // Navigate based on role
       if (user.role === "DOCTOR") {
         navigate("/doctor/dashboard");
       } else {
@@ -39,7 +45,9 @@ const Login = () => {
     } catch (error) {
       console.error(error);
 
-      alert(error.response?.data?.message || "Login Failed");
+      alert(
+        error.response?.data?.message || "Login Failed"
+      );
     }
   };
 
@@ -49,7 +57,7 @@ const Login = () => {
         onSubmit={handleSubmit}
         className="bg-white p-8 rounded-xl shadow-lg w-96"
       >
-        <h1 className="text-3xl font-bold mb-6 text-center">
+        <h1 className="text-3xl font-bold text-center mb-6">
           Login
         </h1>
 

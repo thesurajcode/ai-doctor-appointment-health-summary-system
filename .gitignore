@@ -12,6 +12,9 @@ logs/
 dist/
 build/
 
+# Vite
+.vite/
+
 # Operating System Files
 .DS_Store
 Thumbs.db
