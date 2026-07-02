@@ -5,23 +5,23 @@ const Home = () => {
     <div className="min-h-screen bg-slate-100">
 
       {/* Hero Section */}
-      <section className="bg-blue-700 text-white py-20">
+      <section className="bg-blue-700 text-white py-16 md:py-20">
 
-        <div className="max-w-6xl mx-auto px-6 text-center">
+        <div className="max-w-6xl mx-auto px-4 md:px-6 text-center">
 
-          <h1 className="text-5xl font-bold mb-6">
+          <h1 className="text-3xl md:text-5xl font-bold mb-6">
             🩺 AI Doctor Appointment &
             Health Summary System
           </h1>
 
-          <p className="text-xl max-w-3xl mx-auto mb-10">
+          <p className="text-base md:text-xl max-w-3xl mx-auto mb-10">
             Book appointments with doctors,
             manage patient records and generate
             AI-powered health summaries using
             Gemini AI.
           </p>
 
-          <div className="flex justify-center gap-6">
+          <div className="flex flex-col sm:flex-row justify-center gap-4">
 
             <Link
               to="/login"
@@ -51,9 +51,9 @@ const Home = () => {
           Features
         </h2>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 
-          <div className="bg-white rounded-xl shadow-lg p-8">
+          <div className="bg-white rounded-xl shadow-lg p-6">
             <h3 className="text-2xl font-bold mb-3">
               🤖 AI Health Summary
             </h3>
@@ -134,7 +134,7 @@ const Home = () => {
             Tech Stack
           </h2>
 
-          <div className="flex flex-wrap justify-center gap-4">
+          <div className="flex flex-wrap justify-center gap-3 px-4">
 
             <span className="bg-blue-100 px-5 py-2 rounded-full">
               React

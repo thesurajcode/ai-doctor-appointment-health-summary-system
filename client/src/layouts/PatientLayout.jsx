@@ -11,16 +11,24 @@ const PatientLayout = () => {
   };
 
   return (
-    <div className="flex min-h-screen bg-slate-100">
+    <div className="flex flex-col lg:flex-row min-h-screen bg-slate-100">
 
       {/* Sidebar */}
-      <aside className="w-64 bg-blue-700 text-white flex flex-col p-6">
-
+<aside
+className="
+w-full
+lg:w-64
+bg-blue-700
+text-white
+flex
+flex-col
+p-6
+">
         <h1 className="text-2xl font-bold mb-8">
           🩺 AI Doctor
         </h1>
 
-        <nav className="flex flex-col gap-3 flex-1">
+        <nav className="flex flex-col sm:flex-row lg:flex-col gap-3 flex-1">
 
           <NavLink
             to="/patient/dashboard"
@@ -77,8 +85,21 @@ const PatientLayout = () => {
       <div className="flex-1">
 
         {/* Navbar */}
-        <header className="bg-white shadow px-8 py-5 flex justify-between">
-          <h2 className="text-3xl font-bold">
+        <header
+className="
+bg-white
+shadow
+px-4
+md:px-6
+lg:px-8
+py-4
+flex
+flex-col
+sm:flex-row
+justify-between
+gap-2
+">
+          <h2 className="text-2xl md:text-3xl font-bold">
             Patient Dashboard
           </h2>
 
@@ -88,7 +109,7 @@ const PatientLayout = () => {
         </header>
 
         {/* Page Content */}
-        <main className="p-8">
+        <main className="p-4 md:p-6 lg:p-8">
           <Outlet />
         </main>
 

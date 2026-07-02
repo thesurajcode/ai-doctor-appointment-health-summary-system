@@ -11,12 +11,21 @@ const Sidebar = () => {
   };
 
   return (
-    <aside className="w-64 min-h-screen bg-blue-700 text-white flex flex-col p-6">
+    <aside className="
+w-full
+lg:w-64
+lg:min-h-screen
+bg-blue-700
+text-white
+flex
+flex-col
+p-6
+">
       <h1 className="text-2xl font-bold mb-10">
         🩺 AI Doctor
       </h1>
 
-      <nav className="flex flex-col gap-3 flex-1">
+      <nav className="flex flex-col sm:flex-row lg:flex-col gap-3 flex-1">
 
         <NavLink
           to="/doctor/dashboard"
@@ -48,8 +57,16 @@ const Sidebar = () => {
 
       <button
         onClick={handleLogout}
-        className="mt-auto bg-red-600 hover:bg-red-700 transition rounded-lg py-3 font-semibold"
-      >
+className="
+mt-6
+lg:mt-auto
+bg-red-600
+hover:bg-red-700
+transition
+rounded-lg
+py-3
+font-semibold
+"      >
         Logout
       </button>
     </aside>

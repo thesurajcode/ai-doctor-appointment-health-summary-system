@@ -1,14 +1,15 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { login } from "../../services/auth.service";
 import useAuth from "../../hooks/useAuth";
 
 const Login = () => {
   const navigate = useNavigate();
-
-  // Get login function from Auth Context
   const { login: loginUser } = useAuth();
+
+  const [showPassword, setShowPassword] =
+    useState(false);
 
   const [formData, setFormData] = useState({
     email: "",
@@ -16,10 +17,10 @@ const Login = () => {
   });
 
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
+    setFormData((prev) => ({
+      ...prev,
       [e.target.name]: e.target.value,
-    });
+    }));
   };
 
   const handleSubmit = async (e) => {
@@ -28,15 +29,11 @@ const Login = () => {
     try {
       const response = await login(formData);
 
-      console.log("Login Response:", response);
-
       const token = response.data.token;
       const user = response.data.user;
 
-      // Update Auth Context + Local Storage
       loginUser(user, token);
 
-      // Navigate based on role
       if (user.role === "DOCTOR") {
         navigate("/doctor/dashboard");
       } else {
@@ -46,48 +43,109 @@ const Login = () => {
       console.error(error);
 
       alert(
-        error.response?.data?.message || "Login Failed"
+        error.response?.data?.message ||
+          "Login Failed"
       );
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-100">
-      <form
-        onSubmit={handleSubmit}
-        className="bg-white p-8 rounded-xl shadow-lg w-96"
-      >
-        <h1 className="text-3xl font-bold text-center mb-6">
-          Login
-        </h1>
+    <div className="min-h-screen bg-slate-100 flex items-center justify-center px-4 py-8">
 
-        <input
-          type="email"
-          name="email"
-          placeholder="Enter Email"
-          value={formData.email}
-          onChange={handleChange}
-          className="w-full border rounded-lg p-3 mb-4"
-          required
-        />
+      <div className="bg-white shadow-xl rounded-xl w-full max-w-md p-6 md:p-8">
 
-        <input
-          type="password"
-          name="password"
-          placeholder="Enter Password"
-          value={formData.password}
-          onChange={handleChange}
-          className="w-full border rounded-lg p-3 mb-6"
-          required
-        />
-
-        <button
-          type="submit"
-          className="w-full bg-blue-600 text-white p-3 rounded-lg hover:bg-blue-700 transition"
+        {/* Back */}
+        <Link
+          to="/"
+          className="text-blue-600 hover:underline text-sm"
         >
-          Login
-        </button>
-      </form>
+          ← Back to Home
+        </Link>
+
+        {/* Heading */}
+        <div className="text-center mt-4 mb-8">
+
+          <h1 className="text-3xl md:text-4xl font-bold">
+            🩺 AI Doctor
+          </h1>
+
+          <p className="text-sm md:text-base text-gray-500 mt-2">
+            Welcome Back
+          </p>
+
+        </div>
+
+        <form
+          onSubmit={handleSubmit}
+          className="space-y-5"
+        >
+
+          <input
+            type="email"
+            name="email"
+            placeholder="Enter Email"
+            value={formData.email}
+            onChange={handleChange}
+            className="w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            required
+          />
+
+          <div className="relative">
+
+            <input
+              type={
+                showPassword
+                  ? "text"
+                  : "password"
+              }
+              name="password"
+              placeholder="Enter Password"
+              value={formData.password}
+              onChange={handleChange}
+              className="w-full border rounded-lg p-3 pr-14 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+            />
+
+            <button
+              type="button"
+              onClick={() =>
+                setShowPassword(
+                  !showPassword
+                )
+              }
+              className="absolute right-3 top-3 text-sm text-blue-600"
+            >
+              {showPassword
+                ? "Hide"
+                : "Show"}
+            </button>
+
+          </div>
+
+          <button
+            type="submit"
+            className="w-full bg-blue-600 text-white py-3 rounded-lg text-sm md:text-base hover:bg-blue-700 transition"
+          >
+            Login
+          </button>
+
+        </form>
+
+        <p className="text-center mt-6 text-sm md:text-base text-gray-600">
+
+          Don't have an account?{" "}
+
+          <Link
+            to="/register"
+            className="text-blue-600 font-semibold hover:underline"
+          >
+            Register
+          </Link>
+
+        </p>
+
+      </div>
+
     </div>
   );
 };
