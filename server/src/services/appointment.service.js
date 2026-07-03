@@ -1,5 +1,4 @@
 const ApiError = require("../errors/ApiError");
-;
 
 const {
   generateSummary,
@@ -9,12 +8,12 @@ const {
   createAppointment,
   getDoctorById,
   getPatientByUserId,
-  getAppointmentByDoctorDateTime,
   getAppointmentsByPatientId,
   getAppointmentsByDoctorId,
   getAppointmentById,
   updateAppointmentStatus,
   completeAppointment,
+  getAppointmentDetails: getAppointmentDetailsRepository,
 } = require("../repositories/appointment.repository");
 
 const {
@@ -72,10 +71,7 @@ const changeAppointmentStatus = async (
   );
 
   if (!appointment) {
-    throw new ApiError(
-      404,
-      "Appointment not found"
-    );
+    throw new ApiError(404, "Appointment not found");
   }
 
   if (appointment.status === "COMPLETED") {
@@ -95,16 +91,12 @@ const completeMyAppointment = async (
   appointmentId,
   notes
 ) => {
-
   const appointment = await getAppointmentById(
     appointmentId
   );
 
   if (!appointment) {
-    throw new ApiError(
-      404,
-      "Appointment not found"
-    );
+    throw new ApiError(404, "Appointment not found");
   }
 
   if (appointment.status === "COMPLETED") {
@@ -114,23 +106,43 @@ const completeMyAppointment = async (
     );
   }
 
-  let aiSummary = "AI Summary could not be generated at this time.";
+  let aiSummary =
+    "AI Summary could not be generated at this time.";
 
-try {
-  // Call Flask AI Service
-  const aiResponse = await generateSummary(notes);
+  try {
+    const aiResponse = await generateSummary(notes);
 
-  aiSummary = aiResponse.summary;
+    aiSummary = aiResponse.summary;
+  } catch (error) {
+    console.error(
+      "Gemini AI Error:",
+      error.message
+    );
+  }
 
-} catch (error) {
-  console.error("Gemini AI Error:", error.message);
-}
+  return await completeAppointment(
+    appointmentId,
+    notes,
+    aiSummary
+  );
+};
 
-return await completeAppointment(
-  appointmentId,
-  notes,
-  aiSummary
-);
+const getAppointmentDetails = async (
+  appointmentId
+) => {
+  const appointment =
+    await getAppointmentDetailsRepository(
+      appointmentId
+    );
+
+  if (!appointment) {
+    throw new ApiError(
+      404,
+      "Appointment not found"
+    );
+  }
+
+  return appointment;
 };
 
 module.exports = {
@@ -139,4 +151,5 @@ module.exports = {
   getDoctorAppointments,
   changeAppointmentStatus,
   completeMyAppointment,
+  getAppointmentDetails,
 };

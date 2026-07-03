@@ -215,6 +215,38 @@ const completeAppointment = async (
   });
 };
 
+const getAppointmentDetails = async (appointmentId) => {
+  return prisma.appointment.findUnique({
+    where: {
+      id: appointmentId,
+    },
+    include: {
+      patient: {
+        include: {
+          user: {
+            select: {
+              id: true,
+              name: true,
+              email: true,
+              phone: true,
+            },
+          },
+        },
+      },
+      doctor: {
+        include: {
+          user: {
+            select: {
+              id: true,
+              name: true,
+              email: true,
+            },
+          },
+        },
+      },
+    },
+  });
+};
 
 module.exports = {
   createAppointment,
@@ -226,4 +258,5 @@ module.exports = {
   getAppointmentById,
   updateAppointmentStatus,
   completeAppointment,
+  getAppointmentDetails
 };

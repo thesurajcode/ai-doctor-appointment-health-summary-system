@@ -1,9 +1,7 @@
 import api from "../api/axios";
 
-// Book a new appointment
-export const bookAppointment = async (
-  appointmentData
-) => {
+// Book Appointment
+export const bookAppointment = async (appointmentData) => {
   const response = await api.post(
     "/appointments",
     appointmentData
@@ -12,7 +10,14 @@ export const bookAppointment = async (
   return response.data;
 };
 
-// Complete an appointment
+// Patient Appointments
+export const getMyAppointments = async () => {
+  const response = await api.get("/appointments/my");
+
+  return response.data;
+};
+
+// Doctor completes appointment
 export const completeAppointment = async (
   appointmentId,
   notes
@@ -22,6 +27,17 @@ export const completeAppointment = async (
     {
       notes,
     }
+  );
+
+  return response.data;
+};
+
+// Get complete appointment details
+export const getAppointmentDetails = async (
+  appointmentId
+) => {
+  const response = await api.get(
+    `/appointments/${appointmentId}`
   );
 
   return response.data;

@@ -15,6 +15,7 @@ import DoctorProfile from "../pages/doctor/DoctorProfile";
 import PatientDashboard from "../pages/patient/PatientDashboard";
 import PatientProfile from "../pages/patient/PatientProfile";
 import BookAppointment from "../pages/patient/BookAppointment";
+import AppointmentDetails from "../pages/doctor/AppointmentDetails";
 
 const AppRoutes = () => {
   return (
@@ -44,7 +45,13 @@ const AppRoutes = () => {
           path="profile"
           element={<DoctorProfile />}
         />
-      </Route>
+
+        <Route
+          path="appointments/:id"
+          element={<AppointmentDetails />}
+        />
+
+     </Route>
 
       {/* Patient Routes */}
       <Route
@@ -69,6 +76,7 @@ const AppRoutes = () => {
           path="profile"
           element={<PatientProfile />}
         />
+        
       </Route>
     </Routes>
   );

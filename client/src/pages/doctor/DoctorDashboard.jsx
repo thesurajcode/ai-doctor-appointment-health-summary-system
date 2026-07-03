@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import DashboardCard from "../../components/doctor/DashboardCard";
 import AppointmentTable from "../../components/doctor/AppointmentTable";
@@ -9,6 +10,8 @@ import { getDoctorAppointments } from "../../services/doctor.service";
 import { completeAppointment } from "../../services/appointment.service";
 
 const DoctorDashboard = () => {
+  const navigate = useNavigate();
+
   const [appointments, setAppointments] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -34,6 +37,11 @@ const DoctorDashboard = () => {
   useEffect(() => {
     fetchAppointments();
   }, []);
+
+  // Navigate to Appointment Details Page
+  const handleViewDetails = (appointment) => {
+    navigate(`/doctor/appointments/${appointment.id}`);
+  };
 
   // Open Complete Appointment Modal
   const handleOpenModal = (appointment) => {
@@ -136,6 +144,7 @@ const DoctorDashboard = () => {
       {/* Appointment Table */}
       <AppointmentTable
         appointments={appointments}
+        onViewDetails={handleViewDetails}
         onComplete={handleOpenModal}
         onViewSummary={handleViewSummary}
       />

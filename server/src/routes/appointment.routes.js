@@ -16,6 +16,7 @@ const {
   getDoctorAppointmentList,
   updateStatus,
   completeAppointment,
+  getAppointmentDetails,
 } = require("../controllers/appointment.controller");
 
 const router = express.Router();
@@ -56,6 +57,13 @@ router.put(
   roleMiddleware("DOCTOR"),
   validate(completeAppointmentSchema),
   completeAppointment
+);
+
+router.get(
+  "/:id",
+  authMiddleware,
+  roleMiddleware("DOCTOR"),
+  getAppointmentDetails
 );
 
 module.exports = router;

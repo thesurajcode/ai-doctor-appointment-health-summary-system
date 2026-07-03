@@ -7,8 +7,10 @@ const {
   getDoctorAppointments,
   changeAppointmentStatus,
   completeMyAppointment,
+  getAppointmentDetails: getAppointmentDetailsService,
 } = require("../services/appointment.service");
 
+// Book Appointment
 const createAppointment = asyncHandler(async (req, res) => {
   const appointment = await bookAppointment(
     req.user.id,
@@ -24,6 +26,7 @@ const createAppointment = asyncHandler(async (req, res) => {
   );
 });
 
+// Patient Appointments
 const getPatientAppointments = asyncHandler(async (req, res) => {
   const appointments = await getMyAppointments(req.user.id);
 
@@ -36,6 +39,7 @@ const getPatientAppointments = asyncHandler(async (req, res) => {
   );
 });
 
+// Doctor Appointments
 const getDoctorAppointmentList = asyncHandler(async (req, res) => {
   const appointments = await getDoctorAppointments(req.user.id);
 
@@ -48,6 +52,7 @@ const getDoctorAppointmentList = asyncHandler(async (req, res) => {
   );
 });
 
+// Update Status
 const updateStatus = asyncHandler(async (req, res) => {
   const appointment = await changeAppointmentStatus(
     req.params.id,
@@ -63,6 +68,7 @@ const updateStatus = asyncHandler(async (req, res) => {
   );
 });
 
+// Complete Appointment
 const completeAppointment = asyncHandler(async (req, res) => {
   const appointment = await completeMyAppointment(
     req.params.id,
@@ -78,10 +84,27 @@ const completeAppointment = asyncHandler(async (req, res) => {
   );
 });
 
+// Get Appointment Details
+const getAppointmentDetails = asyncHandler(async (req, res) => {
+  console.log("Appointment ID:", req.params.id);
+
+  const appointment =
+    await getAppointmentDetailsService(req.params.id);
+
+  return res.status(200).json(
+    new ApiResponse(
+      200,
+      appointment,
+      "Appointment details fetched successfully"
+    )
+  );
+});
+
 module.exports = {
   createAppointment,
   getPatientAppointments,
   getDoctorAppointmentList,
   updateStatus,
   completeAppointment,
+  getAppointmentDetails,
 };
