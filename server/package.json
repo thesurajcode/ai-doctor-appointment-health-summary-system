@@ -4,8 +4,8 @@
   "description": "Backend API for AI Doctor Appointment & Health Summary System",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
-    "dev": "nodemon server.js"
+  "start": "prisma generate && node server.js",
+  "dev": "nodemon server.js"
   },
   "author": "Suraj Kumar",
   "license": "ISC",
