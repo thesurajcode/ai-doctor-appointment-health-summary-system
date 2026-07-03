@@ -1,8 +1,11 @@
 const axios = require("axios");
 
+const AI_SERVICE_URL =
+  process.env.AI_SERVICE_URL;
+
 const generateSummary = async (notes) => {
   const response = await axios.post(
-    "http://127.0.0.1:5001/generate-summary",
+    `${AI_SERVICE_URL}/generate-summary`,
     {
       notes,
     }
