@@ -107,24 +107,30 @@ const completeMyAppointment = async (
   }
 
   let aiSummary =
-    "AI Summary could not be generated at this time.";
+    "AI summary is currently unavailable. Please refer to doctor's notes.";
 
   try {
-    const aiResponse = await generateSummary(notes);
 
-    aiSummary = aiResponse.summary;
-  } catch (error) {
-    console.error(
-      "Gemini AI Error:",
-      error.message
-    );
-  }
+  const aiResponse =
+    await generateSummary(notes);
 
-  return await completeAppointment(
-    appointmentId,
-    notes,
-    aiSummary
+  aiSummary = aiResponse.summary;
+
+} catch (error) {
+
+  console.error(
+    "AI Service Error:",
+    error.message
   );
+
+}
+
+
+return await completeAppointment(
+  appointmentId,
+  notes,
+  aiSummary
+);
 };
 
 const getAppointmentDetails = async (
