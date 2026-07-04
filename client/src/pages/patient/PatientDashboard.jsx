@@ -13,8 +13,8 @@ const PatientDashboard = () => {
   const [showSummaryModal, setShowSummaryModal] =
     useState(false);
 
-  const [selectedSummary, setSelectedSummary] =
-    useState("");
+const [selectedAppointment, setSelectedAppointment] =
+  useState(null);
 
   const fetchAppointments = async () => {
     try {
@@ -44,18 +44,23 @@ const PatientDashboard = () => {
     fetchAppointments();
   }, []);
 
-  const handleViewSummary = (appointment) => {
-    setSelectedSummary(
-      appointment.aiSummary ||
-        "AI Summary is not available."
-    );
+const handleViewSummary = (appointment) => {
 
-    setShowSummaryModal(true);
-  };
+  console.log(
+    "Selected appointment:",
+    appointment
+  );
+
+  setSelectedAppointment(
+    appointment
+  );
+
+  setShowSummaryModal(true);
+};
 
   const handleCloseSummary = () => {
     setShowSummaryModal(false);
-    setSelectedSummary("");
+    setSelectedAppointment(null);
   };
 
   if (loading) {
@@ -117,7 +122,7 @@ const PatientDashboard = () => {
       {/* AI Summary Modal */}
       {showSummaryModal && (
         <AISummaryModal
-          summary={selectedSummary}
+          appointment={selectedAppointment}
           onClose={handleCloseSummary}
         />
       )}

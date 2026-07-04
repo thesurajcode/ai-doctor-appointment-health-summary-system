@@ -34,7 +34,7 @@ const loginUser = async (email, password) => {
   const user = await findUserByEmail(email);
 
   if (!user) {
-    throw new ApiError(409, "Email already exists");
+    throw new ApiError(409, "Email not exists");
   } 
 
   const isMatch = await bcrypt.compare(password, user.password);
