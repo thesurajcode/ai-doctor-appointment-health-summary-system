@@ -8,6 +8,7 @@ const BookAppointment = () => {
   const navigate = useNavigate();
 
   const [doctors, setDoctors] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const [selectedDoctor, setSelectedDoctor] = useState(null);
 
@@ -48,25 +49,34 @@ const BookAppointment = () => {
       setSelectedDoctor(doctor);
     }
   };
+const handleSubmit = async (e) => {
+  e.preventDefault();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  try {
 
-    try {
-      await bookAppointment(formData);
+    setLoading(true);
 
-      alert("Appointment booked successfully!");
+    await bookAppointment(formData);
 
-      navigate("/patient/dashboard");
-    } catch (error) {
-      console.error(error);
+    alert("Appointment booked successfully!");
 
-      alert(
-        error.response?.data?.message ||
-          "Booking failed"
-      );
-    }
-  };
+    navigate("/patient/dashboard");
+
+  } catch (error) {
+
+    console.error(error);
+
+    alert(
+      error.response?.data?.message ||
+        "Booking failed"
+    );
+
+  } finally {
+
+    setLoading(false);
+
+  }
+};
 
   return (
     <div className="max-w-2xl mx-auto bg-white shadow-lg rounded-xl p-8">
@@ -185,12 +195,23 @@ const BookAppointment = () => {
           required
         />
 
-        <button
-          type="submit"
-          className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition"
-        >
-          Book Appointment
-        </button>
+<button
+  type="submit"
+  disabled={loading}
+  className={`w-full text-white py-3 rounded-lg transition
+    ${
+      loading
+        ? "bg-gray-400 cursor-not-allowed"
+        : "bg-blue-600 hover:bg-blue-700"
+    }
+  `}
+>
+  {
+    loading
+      ? "Booking Appointment..."
+      : "Book Appointment"
+  }
+</button>
 
       </form>
 

@@ -14,6 +14,7 @@ const DoctorDashboard = () => {
 
   const [appointments, setAppointments] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [completing, setCompleting] = useState(false);
 
   const [selectedAppointment, setSelectedAppointment] = useState(null);
   const [showModal, setShowModal] = useState(false);
@@ -56,27 +57,42 @@ const DoctorDashboard = () => {
   };
 
   // Complete Appointment
-  const handleCompleteAppointment = async (
-    appointmentId,
-    notes
-  ) => {
-    try {
-      await completeAppointment(appointmentId, notes);
+const handleCompleteAppointment = async (
+  appointmentId,
+  notes
+) => {
+  try {
 
-      alert("Appointment completed successfully.");
+    setCompleting(true);
 
-      handleCloseModal();
+    await completeAppointment(
+      appointmentId,
+      notes
+    );
 
-      fetchAppointments();
-    } catch (error) {
-      console.error(error);
+    alert(
+      "Appointment completed successfully."
+    );
 
-      alert(
-        error.response?.data?.message ||
-          "Failed to complete appointment."
-      );
-    }
-  };
+    handleCloseModal();
+
+    fetchAppointments();
+
+  } catch (error) {
+
+    console.error(error);
+
+    alert(
+      error.response?.data?.message ||
+        "Failed to complete appointment."
+    );
+
+  } finally {
+
+    setCompleting(false);
+
+  }
+};
 
   // Open AI Summary Modal
   const handleViewSummary = (appointment) => {
@@ -151,11 +167,12 @@ const DoctorDashboard = () => {
 
       {/* Complete Appointment Modal */}
       {showModal && (
-        <CompleteAppointmentModal
-          appointment={selectedAppointment}
-          onClose={handleCloseModal}
-          onComplete={handleCompleteAppointment}
-        />
+       <CompleteAppointmentModal
+        appointment={selectedAppointment}
+        onClose={handleCloseModal}
+        onComplete={handleCompleteAppointment}
+        loading={completing}
+      />
       )}
 
       {/* AI Summary Modal */}

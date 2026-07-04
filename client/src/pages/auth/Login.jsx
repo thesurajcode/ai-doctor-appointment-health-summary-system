@@ -11,6 +11,10 @@ const Login = () => {
   const [showPassword, setShowPassword] =
     useState(false);
 
+  // Loading state
+  const [loading, setLoading] =
+    useState(false);
+
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -23,10 +27,14 @@ const Login = () => {
     }));
   };
 
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
+
+      setLoading(true);
+
       const response = await login(formData);
 
       const token = response.data.token;
@@ -39,22 +47,29 @@ const Login = () => {
       } else {
         navigate("/patient/dashboard");
       }
+
     } catch (error) {
+
       console.error(error);
 
       alert(
         error.response?.data?.message ||
           "Login Failed"
       );
+
+    } finally {
+
+      setLoading(false);
+
     }
   };
+
 
   return (
     <div className="min-h-screen bg-slate-100 flex items-center justify-center px-4 py-8">
 
       <div className="bg-white shadow-xl rounded-xl w-full max-w-md p-6 md:p-8">
 
-        {/* Back */}
         <Link
           to="/"
           className="text-blue-600 hover:underline text-sm"
@@ -62,7 +77,7 @@ const Login = () => {
           ← Back to Home
         </Link>
 
-        {/* Heading */}
+
         <div className="text-center mt-4 mb-8">
 
           <h1 className="text-3xl md:text-4xl font-bold">
@@ -74,6 +89,7 @@ const Login = () => {
           </p>
 
         </div>
+
 
         <form
           onSubmit={handleSubmit}
@@ -89,6 +105,7 @@ const Login = () => {
             className="w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
             required
           />
+
 
           <div className="relative">
 
@@ -106,6 +123,7 @@ const Login = () => {
               required
             />
 
+
             <button
               type="button"
               onClick={() =>
@@ -122,14 +140,27 @@ const Login = () => {
 
           </div>
 
+
+          {/* Login Button with loading */}
           <button
             type="submit"
-            className="w-full bg-blue-600 text-white py-3 rounded-lg text-sm md:text-base hover:bg-blue-700 transition"
+            disabled={loading}
+            className={`w-full text-white py-3 rounded-lg text-sm md:text-base transition
+              ${
+                loading
+                  ? "bg-gray-400 cursor-not-allowed"
+                  : "bg-blue-600 hover:bg-blue-700"
+              }
+            `}
           >
-            Login
+            {loading
+              ? "Signing in..."
+              : "Login"}
           </button>
 
+
         </form>
+
 
         <p className="text-center mt-6 text-sm md:text-base text-gray-600">
 
@@ -143,6 +174,7 @@ const Login = () => {
           </Link>
 
         </p>
+
 
       </div>
 
