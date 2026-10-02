@@ -5,6 +5,7 @@ const authRoutes = require("./routes/auth.routes");
 const doctorRoutes = require("./routes/doctor.routes");
 const patientRoutes = require("./routes/patient.routes");
 const appointmentRoutes = require("./routes/appointment.routes");
+const paymentRoutes = require("./routes/payment.routes");
 const errorHandler = require("./middleware/error.middleware");
 
 const app = express();
@@ -19,6 +20,7 @@ app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/doctor", doctorRoutes);
 app.use("/api/v1/patient", patientRoutes);
 app.use("/api/v1/appointments", appointmentRoutes);
+app.use("/api/v1/payments", paymentRoutes);
 
 // Health Check
 app.get("/", (req, res) => {

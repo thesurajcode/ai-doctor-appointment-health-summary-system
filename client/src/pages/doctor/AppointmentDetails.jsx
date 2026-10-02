@@ -204,9 +204,21 @@ const AppointmentDetails = () => {
 
           <p>
             <strong>Status:</strong>{" "}
-            {appointment.status}
+            <span className="capitalize">{appointment.status.toLowerCase()}</span>
           </p>
 
+          <p>
+            <strong>Payment:</strong>{" "}
+            {appointment.payment?.status === "PAID" ? (
+              <span className="bg-emerald-100 text-emerald-800 px-2.5 py-1 rounded-full text-xs font-semibold">
+                ✓ ₹{appointment.payment.amount} Paid
+              </span>
+            ) : (
+              <span className="bg-amber-100 text-amber-800 px-2.5 py-1 rounded-full text-xs font-semibold">
+                Pending
+              </span>
+            )}
+          </p>
         </div>
 
         <div className="mt-6">

@@ -71,6 +71,7 @@ const getAppointmentsByPatientId = async (patientId) => {
       patientId,
     },
     include: {
+      payment: true,
       doctor: {
         include: {
           user: {
@@ -107,6 +108,7 @@ const getAppointmentsByDoctorId = async (doctorId) => {
       doctorId,
     },
     include: {
+      payment: true,
       patient: {
         include: {
           user: {
@@ -221,6 +223,7 @@ const getAppointmentDetails = async (appointmentId) => {
       id: appointmentId,
     },
     include: {
+      payment: true,
       patient: {
         include: {
           user: {

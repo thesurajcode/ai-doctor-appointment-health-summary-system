@@ -19,6 +19,12 @@ enum Gender {
   OTHER
 }
 
+enum PaymentStatus {
+  PENDING
+  PAID
+  REFUNDED
+}
+
 enum BloodGroup {
   A_POSITIVE
   A_NEGATIVE
@@ -121,4 +127,20 @@ model Appointment {
   doctor Doctor @relation(fields: [doctorId], references: [id], onDelete: Cascade)
 
   patient Patient @relation(fields: [patientId], references: [id], onDelete: Cascade)
+
+  payment Payment?
+}
+
+model Payment {
+  id                 String        @id @default(cuid())
+  appointmentId      String        @unique
+  amount             Float
+  currency           String        @default("INR")
+  status             PaymentStatus @default(PENDING)
+  razorpayOrderId    String?
+  razorpayPaymentId  String?
+  razorpaySignature  String?
+  createdAt          DateTime      @default(now())
+
+  appointment Appointment @relation(fields: [appointmentId], references: [id], onDelete: Cascade)
 }

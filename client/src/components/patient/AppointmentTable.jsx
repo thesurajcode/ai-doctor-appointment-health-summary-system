@@ -31,6 +31,10 @@ const AppointmentTable = ({
               </th>
 
               <th className="p-4 text-left">
+                Payment
+              </th>
+
+              <th className="p-4 text-left">
                 Status
               </th>
 
@@ -69,11 +73,34 @@ const AppointmentTable = ({
 
 
                 <td className="p-4">
+                  {appointment.payment?.status === "PAID" ? (
+                    <span className="bg-emerald-100 text-emerald-700 px-3 py-1 rounded-full text-xs font-medium inline-flex items-center gap-1">
+                      ✓ ₹{appointment.payment.amount} Paid
+                    </span>
+                  ) : appointment.payment?.status === "PENDING" ? (
+                    <span className="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-xs font-medium">
+                      Unpaid
+                    </span>
+                  ) : (
+                    <span className="text-gray-400 text-xs">
+                      ₹{appointment.doctor?.consultationFee || "0"}
+                    </span>
+                  )}
+                </td>
+
+
+                <td className="p-4">
 
                   {appointment.status === "COMPLETED" ? (
 
                     <span className="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm">
                       Completed
+                    </span>
+
+                  ) : appointment.status === "CONFIRMED" ? (
+
+                    <span className="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm">
+                      Confirmed
                     </span>
 
                   ) : (
