@@ -17,6 +17,7 @@ const {
   updateStatus,
   completeAppointment,
   getAppointmentDetails,
+  regenerateSummary,
 } = require("../controllers/appointment.controller");
 
 const router = express.Router();
@@ -64,6 +65,13 @@ router.get(
   authMiddleware,
   roleMiddleware("DOCTOR"),
   getAppointmentDetails
+);
+
+router.post(
+  "/:id/regenerate-summary",
+  authMiddleware,
+  roleMiddleware("DOCTOR"),
+  regenerateSummary
 );
 
 module.exports = router;

@@ -4,6 +4,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import {
   getAppointmentDetails,
   completeAppointment,
+  regenerateSummary,
 } from "../../services/appointment.service";
 
 const AppointmentDetails = () => {
@@ -14,6 +15,7 @@ const AppointmentDetails = () => {
   const [notes, setNotes] = useState("");
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [regenerating, setRegenerating] = useState(false);
 
   useEffect(() => {
     fetchAppointment();
@@ -58,6 +60,23 @@ const AppointmentDetails = () => {
       );
     } finally {
       setSaving(false);
+    }
+  };
+
+  const handleRegenerate = async () => {
+    try {
+      setRegenerating(true);
+      const response = await regenerateSummary(id);
+      alert("AI Summary generated successfully!");
+      setAppointment(response.data);
+    } catch (error) {
+      console.error(error);
+      alert(
+        error.response?.data?.message ||
+          "Failed to generate AI summary."
+      );
+    } finally {
+      setRegenerating(false);
     }
   };
 
@@ -270,22 +289,31 @@ const AppointmentDetails = () => {
 
       </div>
 
-      {/* AI Summary */}
-
-      {appointment.aiSummary && (
-
-        <div className="bg-green-50 border border-green-200 rounded-xl p-6">
-
-          <h2 className="text-2xl font-semibold mb-4">
-            🤖 AI Health Summary
-          </h2>
-
-          <div className="whitespace-pre-wrap leading-8">
-            {appointment.aiSummary}
+      {/* AI Summary Section */}
+      {appointment.status === "COMPLETED" && (
+        <div className="bg-green-50 border border-green-200 rounded-xl p-6 shadow-sm">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4 border-b border-green-200/60 pb-3">
+            <h2 className="text-2xl font-semibold text-green-900">
+              🤖 AI Health Summary
+            </h2>
+            <button
+              onClick={handleRegenerate}
+              disabled={regenerating}
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition shadow-sm flex items-center gap-2 text-white ${
+                regenerating
+                  ? "bg-gray-400 cursor-not-allowed"
+                  : "bg-emerald-600 hover:bg-emerald-700 active:scale-[0.98]"
+              }`}
+            >
+              {regenerating ? "⚡ Generating with Gemini..." : "🔄 Regenerate Summary"}
+            </button>
           </div>
 
+          <div className="whitespace-pre-wrap leading-8 text-gray-800">
+            {appointment.aiSummary ||
+              "AI summary has not been generated yet. Click 'Regenerate Summary' above."}
+          </div>
         </div>
-
       )}
 
     </div>

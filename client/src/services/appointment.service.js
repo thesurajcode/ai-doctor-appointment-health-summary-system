@@ -42,3 +42,12 @@ export const getAppointmentDetails = async (
 
   return response.data;
 };
+
+// Regenerate AI Summary
+export const regenerateSummary = async (appointmentId) => {
+  const response = await api.post(
+    `/appointments/${appointmentId}/regenerate-summary`
+  );
+
+  return response.data;
+};

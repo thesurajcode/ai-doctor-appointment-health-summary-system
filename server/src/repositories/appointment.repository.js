@@ -251,6 +251,17 @@ const getAppointmentDetails = async (appointmentId) => {
   });
 };
 
+const updateAppointmentSummary = async (appointmentId, aiSummary) => {
+  return prisma.appointment.update({
+    where: {
+      id: appointmentId,
+    },
+    data: {
+      aiSummary,
+    },
+  });
+};
+
 module.exports = {
   createAppointment,
   getDoctorById,
@@ -261,5 +272,6 @@ module.exports = {
   getAppointmentById,
   updateAppointmentStatus,
   completeAppointment,
-  getAppointmentDetails
+  getAppointmentDetails,
+  updateAppointmentSummary,
 };

@@ -100,6 +100,20 @@ const getAppointmentDetails = asyncHandler(async (req, res) => {
   );
 });
 
+// Regenerate AI Summary
+const regenerateSummary = asyncHandler(async (req, res) => {
+  const { regenerateAppointmentSummary } = require("../services/appointment.service");
+  const updatedAppointment = await regenerateAppointmentSummary(req.params.id);
+
+  return res.status(200).json(
+    new ApiResponse(
+      200,
+      updatedAppointment,
+      "AI Summary generated successfully"
+    )
+  );
+});
+
 module.exports = {
   createAppointment,
   getPatientAppointments,
@@ -107,4 +121,5 @@ module.exports = {
   updateStatus,
   completeAppointment,
   getAppointmentDetails,
+  regenerateSummary,
 };

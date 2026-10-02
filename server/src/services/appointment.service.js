@@ -14,6 +14,7 @@ const {
   updateAppointmentStatus,
   completeAppointment,
   getAppointmentDetails: getAppointmentDetailsRepository,
+  updateAppointmentSummary,
 } = require("../repositories/appointment.repository");
 
 const {
@@ -151,6 +152,20 @@ const getAppointmentDetails = async (
   return appointment;
 };
 
+const regenerateAppointmentSummary = async (appointmentId) => {
+  const appointment = await getAppointmentById(appointmentId);
+  if (!appointment) {
+    throw new ApiError(404, "Appointment not found");
+  }
+
+  if (!appointment.notes) {
+    throw new ApiError(400, "Cannot generate summary without doctor notes");
+  }
+
+  const aiResponse = await generateSummary(appointment.notes);
+  return await updateAppointmentSummary(appointmentId, aiResponse.summary);
+};
+
 module.exports = {
   bookAppointment,
   getMyAppointments,
@@ -158,4 +173,5 @@ module.exports = {
   changeAppointmentStatus,
   completeMyAppointment,
   getAppointmentDetails,
+  regenerateAppointmentSummary,
 };
