@@ -157,10 +157,18 @@ const BookAppointment = () => {
       razorpay.open();
     } catch (error) {
       console.error("Payment initiation error:", error);
-      alert(
-        error.response?.data?.message ||
-          "Could not initiate booking and payment"
-      );
+      const resData = error.response?.data;
+      if (resData?.errors && resData.errors.length > 0) {
+        const errorDetails = resData.errors
+          .map((e) => `• ${e.field}: ${e.message}`)
+          .join("\n");
+        alert(`Validation Failed:\n\n${errorDetails}`);
+      } else {
+        alert(
+          resData?.message ||
+            "Could not initiate booking and payment"
+        );
+      }
       setLoading(false);
     }
   };
@@ -253,6 +261,8 @@ const BookAppointment = () => {
         <input
           type="date"
           name="appointmentDate"
+          min={new Date().toISOString().split("T")[0]}
+          max="2035-12-31"
           value={formData.appointmentDate}
           onChange={handleChange}
           className="w-full border rounded-lg p-3 mb-4"
